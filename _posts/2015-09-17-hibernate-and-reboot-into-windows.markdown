@@ -17,13 +17,15 @@ hibernating and rebooting into windows.
 I found the first information in `man 5 systemd-sleep.conf`.
 It says under "OPTIONS":
 
-    The following options can be configured in the "[Sleep]" section of
-    /etc/systemd/sleep.conf or a sleep.conf.d file:
+{% highlight groff %}
+The following options can be configured in the "[Sleep]" section of
+/etc/systemd/sleep.conf or a sleep.conf.d file:
 
-    SuspendMode=, HibernateMode=, HybridSleepMode=
-        The string to be written to /sys/power/disk by, respectively,
-        systemd-suspend.service(8), systemd-hibernate.service(8), or
-        systemd-hybrid-sleep.service(8). [...]
+SuspendMode=, HibernateMode=, HybridSleepMode=
+    The string to be written to /sys/power/disk by, respectively,
+    systemd-suspend.service(8), systemd-hibernate.service(8), or
+    systemd-hybrid-sleep.service(8). [...]
+{% endhighlight %}
 
 Just issuing `cat /sys/power/disk` shows some possible values that can go there:
 
@@ -40,16 +42,18 @@ when the system is resumed after hibernation.
 The first one goes somewhere in our `PATH` e.g.
 `/usr/local/bin/hibernate_and_reboot.sh`
 
-    #!/usr/bin/bash
+{% highlight bash %}
+#!/usr/bin/bash
 
-    set -e
+set -e
 
-    tee /etc/systemd/sleep.conf.d/50-reboot-on-hibernate.conf << EOF
-    [Sleep]
-    HibernateMode=reboot
-    EOF
+tee /etc/systemd/sleep.conf.d/50-reboot-on-hibernate.conf << EOF
+[Sleep]
+HibernateMode=reboot
+EOF
 
-    systemctl hibernate
+systemctl hibernate
+{% endhighlight %}
 
 It will create the file `/etc/systemd/sleep.conf.d/50-reboot-on-hibernate.conf`
 and fill in the `HibernateMode=reboot` option.
@@ -57,12 +61,14 @@ and fill in the `HibernateMode=reboot` option.
 The second one goes into `/usr/lib/systemd/system-sleep` e.g.
 `/usr/lib/systemd/system-sleep/remove-reboot-conf.sh`
 
-    #!/bin/sh
-    case $1/$2 in
-    	post/hibernate)
-    		rm /etc/systemd/sleep.conf.d/50-reboot-on-hibernate.conf
-    		;;
-    esac
+{% highlight bash %}
+#!/bin/sh
+case $1/$2 in
+	post/hibernate)
+		rm /etc/systemd/sleep.conf.d/50-reboot-on-hibernate.conf
+		;;
+esac
+{% endhighlight %}
 
 It will -- once made executable -- delete the file created by the last script as
 soon as the system resumes ([related Arch Wiki section](https://wiki.archlinux.org/index.php/Power_management#Hooks_in_.2Fusr.2Flib.2Fsystemd.2Fsystem-sleep)).
