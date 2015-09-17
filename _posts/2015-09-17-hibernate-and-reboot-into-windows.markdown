@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hibernate and Reboot into Windows"
-date:   2015-09-12 18:10:23
+date:   2015-09-17 15:40:00
 categories: systemd
 ---
 Sadly, gaming on Linux is still a rather improvable story.
