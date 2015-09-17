@@ -78,9 +78,7 @@ That might be because of my old firest-generation-UEFI mainboard.
 
 Here is how it works, anyway:
 The command `efibootmgr` will give you a list of all boot entries stored in your
-UEFI firmware.
-(If you want to read more about it: [here](https://www.happyassassin.net/2014/01/25/uefi-boot-how-does-that-actually-work-then/)
-is a quite instructive article that I enjoyed.)
+UEFI firmware.[^1]
 One entry should look like this:
 
     Boot0003* Windows Boot Manager
@@ -108,3 +106,5 @@ For me the line is:
     grub-reboot 2
 
 Just like above: add this to your reboot script and everything should be set up.
+
+[^1]: If you want to read more about it: [here](https://www.happyassassin.net/2014/01/25/uefi-boot-how-does-that-actually-work-then/) is a quite instructive article that I enjoyed.
